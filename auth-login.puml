@@ -1,0 +1,30 @@
+@startuml
+title Activity Diagram - User Login
+
+start
+:User enters email and password;
+:Frontend sends POST /api/auth/login;
+:Server finds user by email in database;
+if (User found?) then (no)
+  :Return 400 "Invalid email or password";
+  stop
+else (yes)
+  :Verify user is_active status;
+  :Compare password using bcrypt;
+  if (Password valid?) then (no)
+    :Return 400 "Invalid email or password";
+    stop
+  else (yes)
+    :Sign JWT token;
+    if (Role is applicant?) then (yes)
+      :Load applicant profile from database;
+    else (Role is company-admin?)
+      :Load company profile from database;
+    endif
+    :Return 200 with token, user data, and profile;
+    :Frontend displays success and stores token;
+  endif
+endif
+stop
+
+@enduml
