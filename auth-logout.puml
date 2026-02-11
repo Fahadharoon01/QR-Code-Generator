@@ -1,0 +1,12 @@
+@startuml
+title Activity Diagram - User Logout
+
+start
+:User clicks logout;
+:Frontend sends POST /api/auth/logout;
+:Server returns 200 "Logged out successfully";
+:Frontend clears token from storage;
+:Redirect user to login page;
+stop
+
+@enduml
