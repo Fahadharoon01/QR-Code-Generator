@@ -1,0 +1,24 @@
+@startuml
+title Activity Diagram - Create Company Job
+
+start
+:Company submits job post;
+:Frontend sends POST /api/company/jobs with Bearer token;
+:Server verifies JWT token and role=company;
+:Server finds user in database;
+if (Email verified?) then (no)
+  :Return 403 "Verify email before posting";
+  stop
+else (yes)
+  :Server finds company profile;
+  :Validate job fields;
+  :Create job in database with status (draft/active);
+  if (Job status is active?) then (yes)
+    :Send POST to AI Service /api/jobs/ingest;
+  endif
+  :Return 201 "Job created";
+  :Frontend displays success message;
+endif
+stop
+
+@enduml
