@@ -1,0 +1,24 @@
+@startuml
+title Activity Diagram - Register Applicant
+
+start
+:Applicant fills signup form;
+:Frontend sends POST /api/auth/register-applicant;
+:Server finds user by email in database;
+if (User exists?) then (yes)
+  :Return 400 "User already exists";
+  stop
+else (no)
+  :Hash password using bcrypt;
+  :Create user account with role=applicant;
+  :Create applicant profile in database;
+  :Sign JWT token;
+  if (Send welcome email enabled?) then (yes)
+    :Send welcome email via SMTP (Brevo);
+  endif
+  :Return 200 with token, user data, and applicant profile;
+  :Frontend displays success;
+endif
+stop
+
+@enduml
