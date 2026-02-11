@@ -1,0 +1,14 @@
+@startuml
+title Activity Diagram - List Company Jobs
+
+start
+:Company opens jobs list;
+:Frontend sends GET /api/company/jobs with Bearer token;
+:Server verifies JWT token and role=company;
+:Server finds company profile in database;
+:Server finds all jobs by company_id;
+:Return 200 with jobs list;
+:Frontend displays jobs to company;
+stop
+
+@enduml

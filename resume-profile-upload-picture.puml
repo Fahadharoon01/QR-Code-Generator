@@ -1,0 +1,19 @@
+@startuml
+title Activity Diagram - Upload Profile Picture
+
+start
+:Applicant uploads profile picture;
+:Frontend sends POST /api/profile/upload-picture with Bearer token;
+:Server validates image data;
+:Server uploads image to Cloudinary;
+if (Upload failed?) then (yes)
+  :Return 500 "Upload failed";
+  stop
+else (no)
+  :Update profile with picture URL in database;
+  :Return 200 with image URL;
+  :Frontend displays uploaded image;
+endif
+stop
+
+@enduml

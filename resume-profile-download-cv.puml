@@ -1,0 +1,25 @@
+@startuml
+title Activity Diagram - Download CV
+
+start
+:Applicant requests CV download;
+:Frontend sends GET /api/profile/download-cv with Bearer token;
+:Server verifies JWT token;
+:Server finds profile by userId in database;
+if (Profile not found?) then (yes)
+  :Return 404 "Profile not found";
+  stop
+else (no)
+  if (Profile not completed?) then (yes)
+    :Return 400 "Complete profile first";
+    stop
+  else (no)
+    :Generate resume PDF using PDF Generator;
+    :PDF Generator returns PDF buffer;
+    :Return 200 with PDF file;
+    :Frontend saves file to user's device;
+  endif
+endif
+stop
+
+@enduml

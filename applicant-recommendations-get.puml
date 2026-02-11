@@ -1,0 +1,15 @@
+@startuml
+title Activity Diagram - Get Job Recommendations
+
+start
+:Applicant views recommendations;
+:Frontend sends GET /api/applicant/recommendations with Bearer token and filters;
+:Server verifies JWT token and role=applicant;
+:Server finds applicant by user_id in database;
+:Server sends POST request to AI Service (Server-2) /api/recommendations;
+:AI Service analyzes applicant profile and returns recommended jobs;
+:Server returns 200 with recommendations;
+:Frontend displays recommended jobs to applicant;
+stop
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+title Activity Diagram - AI Enhancement for Education
+
+start
+:Applicant requests education enhancement;
+:Frontend sends POST /api/profile/ai-enhance/education with Bearer token;
+:Server validates JWT token;
+:Server validates description, degree, and institution;
+if (Validation successful?) then (yes)
+  :Send request to Gemini AI with education details;
+  :Gemini AI generates enhanced education text;
+  :Server receives enhanced text;
+  :Send 200 response with enhancedText;
+  :Frontend displays suggestion to applicant;
+else (no)
+  :Return 400 validation error;
+  :Display error message;
+endif
+stop
+
+@enduml

@@ -1,0 +1,47 @@
+@startuml
+title Activity Diagram - Interview Automation (Planned)
+
+start
+:Company selects candidate and schedules interview;
+:Frontend sends POST /api/interviews/schedule;
+:Server creates interview record with status in database;
+:Server sends interview invite email;
+:Return 201 "Scheduled";
+
+:Applicant accepts invite;
+:Frontend sends POST /api/interviews/:id/accept;
+:Server updates status to accepted in database;
+:Return 200 "Accepted";
+
+:Applicant joins interview;
+:Frontend sends POST /api/interviews/:id/start;
+:Server validates interview and status;
+:Server creates AI session via AI Interview Orchestrator;
+:AI Interview Orchestrator returns session token;
+:Server stores session metadata in database;
+:Return 200 with session token;
+
+repeat
+  :Frontend requests next question from AI Orchestrator;
+  :AI Orchestrator synthesizes audio prompt via ElevenLabs;
+  :ElevenLabs returns audio URL;
+  :AI Orchestrator returns question and audio URL;
+  :Applicant records response;
+  :Frontend sends response to AI Orchestrator;
+  :AI Orchestrator sends response summary to Server-1;
+  :Server saves question and response in database;
+repeat while (More questions?)
+
+:AI Orchestrator posts scores and feedback to Server-1;
+:Server stores interview score in database;
+:Server notifies company via email;
+
+:Company views interview results;
+:Frontend sends GET /api/interviews/:id/score;
+:Server fetches score from database;
+:Return 200 with score and feedback;
+:Frontend displays results to company;
+
+stop
+
+@enduml

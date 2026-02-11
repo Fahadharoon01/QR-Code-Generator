@@ -1,0 +1,16 @@
+@startuml
+title Activity Diagram - AI Shortlisting (Planned)
+
+start
+:Company runs AI shortlist;
+:Frontend sends POST /api/screening/shortlist;
+:Server loads applicants and job details from database;
+:Server sends data to AI Screening Engine;
+:AI Screening Engine evaluates candidates;
+:AI Screening Engine returns scores and shortlist;
+:Server stores shortlist results in database;
+:Return 200 with shortlisted list;
+:Frontend displays shortlist to company;
+stop
+
+@enduml

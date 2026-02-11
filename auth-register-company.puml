@@ -1,0 +1,31 @@
+@startuml
+title Activity Diagram - Register Company
+
+start
+:Company fills signup form;
+:Frontend sends POST /api/auth/register-company;
+:Server finds user by email in database;
+if (User exists?) then (yes)
+  :Return 400 "User already exists";
+  stop
+else (no)
+  :Server finds company by email;
+  if (Company exists?) then (yes)
+    :Return 400 "Company already registered";
+    stop
+  else (no)
+    :Determine role (admin or company-admin);
+    :Hash password using bcrypt;
+    :Create user account;
+    :Create company profile in database;
+    :Sign JWT token;
+    if (Send welcome email enabled?) then (yes)
+      :Send welcome email via SMTP (Brevo);
+    endif
+    :Return 200 with token, user data, and company profile;
+    :Frontend displays success;
+  endif
+endif
+stop
+
+@enduml

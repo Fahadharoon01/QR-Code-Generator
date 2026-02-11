@@ -1,0 +1,25 @@
+@startuml
+title Activity Diagram - Verify Email
+
+start
+:User enters OTP;
+:Frontend sends POST /api/auth/verify-email with Bearer token;
+:Server verifies JWT token;
+:Server finds user by id in database;
+if (OTP missing or invalid?) then (yes)
+  :Return 400 "Invalid OTP";
+  stop
+else (no)
+  if (OTP expired?) then (yes)
+    :Return 400 "OTP expired";
+    stop
+  else (no)
+    :Set is_verified=true in database;
+    :Clear OTP fields;
+    :Return 200 "Email verified";
+    :Frontend displays success message;
+  endif
+endif
+stop
+
+@enduml

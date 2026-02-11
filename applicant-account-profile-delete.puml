@@ -1,0 +1,19 @@
+@startuml
+title Activity Diagram - Delete Applicant Account Profile
+
+start
+:Applicant requests account deletion;
+:Frontend sends DELETE /api/applicants/profile with Bearer token;
+:Server verifies JWT token;
+:Server deletes applicant profile by user_id from database;
+if (Applicant profile found and deleted?) then (no)
+  :Return 404 "Applicant profile not found";
+  stop
+else (yes)
+  :Delete associated user account from database;
+  :Return 200 "Profile and account deleted";
+  :Frontend clears session and redirects;
+endif
+stop
+
+@enduml
