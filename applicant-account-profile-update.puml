@@ -1,0 +1,20 @@
+@startuml
+title Activity Diagram - Update Applicant Account Profile
+
+start
+:Applicant edits account profile;
+:Frontend sends PUT /api/applicants/profile with Bearer token;
+:Server verifies JWT token;
+:Server finds applicant by user_id in database;
+if (Applicant profile found?) then (no)
+  :Return 404 "Applicant profile not found";
+  stop
+else (yes)
+  :Update profile fields in database;
+  :Save changes;
+  :Return 200 "Profile updated";
+  :Frontend displays success message;
+endif
+stop
+
+@enduml

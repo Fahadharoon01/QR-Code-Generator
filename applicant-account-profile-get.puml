@@ -1,0 +1,18 @@
+@startuml
+title Activity Diagram - Get Applicant Account Profile
+
+start
+:Applicant opens account profile;
+:Frontend sends GET /api/applicants/profile with Bearer token;
+:Server verifies JWT token;
+:Server finds applicant by user_id in database;
+if (Applicant profile found?) then (no)
+  :Return 404 "Applicant profile not found";
+  stop
+else (yes)
+  :Return 200 with applicant profile data;
+  :Frontend displays profile to applicant;
+endif
+stop
+
+@enduml
